@@ -1,0 +1,35 @@
+input 201
+input 202
+
+compare 201 202
+je equal
+jb below
+ja above
+.equal
+    output 201
+    exit
+.below
+    mov 203 201
+    mov 201 202
+    mov 202 203
+.above
+set 204 0
+
+.divide
+    div 201 202 203
+    mul 202 203 203
+    sub 201 203 203
+    mov 201 202
+    mov 202 203
+    compare 203 204
+    je result
+    goto divide
+.result
+    set 200 0
+    compare 201 200
+    ja positive
+    set 200 -1
+    mul 200 201 201
+
+    .positive
+        output 201

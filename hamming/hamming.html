@@ -1,0 +1,197 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+	<title>Hamming</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+		* {
+			font-family: Roboto;
+			font-weight: 500;
+			margin: 0;
+			padding: 0;
+		}
+		.err {
+			color: red;
+			font-size: 14px;
+			font-weight: 400;
+		}
+		.err_changed {
+			color: rgb(236, 222, 28);
+		}
+		.err_no {
+			color: green;
+		}
+		.field_names {
+			color: #5b0566;
+			font-size: 20px;
+		}
+		.header {
+			font-size: 40px;
+			font-family: 'Lobster', cursive;
+			color: #e485e7;
+			font-weight: 900;
+			margin-bottom: 10px;
+		}
+		.content {
+			display: flex;
+			margin-left: 20px;
+			margin-top: 10px;
+		}
+		.row {
+			margin-bottom: 10px;
+		}
+		input[type="text"] {
+			background: #fff;
+			border: 1px solid #cbcbcb;
+			font-size: 14px;
+			outline: none;
+			padding: 2px 10px;
+			box-shadow: none;
+			border-radius: 5px;
+			margin-bottom: 5px;
+			margin-top: 10px;
+		}
+		input[type="button"] {
+			border: 0px solid black;
+			border-radius: 4px;
+			cursor: pointer;
+			background: #63b4ad;
+			padding: 3px;
+			font-weight: 400;
+			margin-left: 6px;
+		}
+		input.clear {
+			background: #6ec570;
+		}
+		hr {
+			background-color: #000;
+			margin-left: 0px;
+			margin-top: 40px;
+		}
+		.anonymous {
+			margin-left: 40px;
+		}
+	</style>
+	<div class="content">
+		<div class="form">
+			<p class="header">Hamming</p>
+			<div class="row">
+				<p class="field_names">Кодирование</p>
+				<input type="text" placeholder="Ввод" id='mes1' maxlength='4' onkeypress="return (event.charCode === 8 || event.charCode === 0 || event.charCode === 13) ? null : event.charCode >= 48 && event.charCode <= 49">
+				<input type='button' onclick='encode()' value='Закодировать'>
+				<p class="err" id="error1"></p>
+			</div>
+			<div class="row">
+				<input placeholder="Вывод" readonly type='text' id='mes_cod1' maxlength='4'>
+				<input type='button' class="clear" onclick='clear1()' value='Очистить'>
+			</div>
+			<hr>
+			<div class="row">
+				<p class="field_names">Декодирование</p>
+				<input placeholder="Ввод" type="text" id='mes2' maxlength='7' onkeypress="return (event.charCode === 8 || event.charCode === 0 || event.charCode === 13) ? null : event.charCode >= 48 && event.charCode <= 49">
+				<input type='button' onclick='decode()' value='Раскодировать'>
+				<p class="err" id="error2"></p>
+			</div>
+			<div class="row">
+				<input placeholder="Вывод" readonly maxlength='7' type='text' id='mes_cod2'>
+				<input type='button' class="clear" onclick='clear2()' value='Очистить'>
+				<p class="err err_changed" id="error3"></p>
+				<p class="err err_no" id="error4"></p>
+			</div>
+		</div>
+
+	</div>
+	<script>
+		let error1 = document.getElementById('error1');
+		let error2 = document.getElementById('error2');
+		let error3 = document.getElementById('error3');
+		let error4 = document.getElementById('error4');
+
+		let mes_cod1 = document.getElementById('mes_cod1');
+		let mes_cod2 = document.getElementById('mes_cod2');
+
+		function clear1() {
+			mes_cod1.value = '';
+			error1.innerText = '';
+		}
+		function clear2() {
+			mes_cod2.value = '';
+			error2.innerText = '';
+			error3.innerText = '';
+		}
+		function encode() {
+			let input = document.getElementById('mes1').value;
+			if (input.length === 4) {
+				error1.innerText = '';
+				let x = (Number(input[0]) + Number(input[1]) + Number(input[2]))%2;
+				let y = (Number(input[0]) + Number(input[1]) + Number(input[3]))%2;
+				let z = (Number(input[0]) + Number(input[2]) + Number(input[3]))%2;
+				mes_cod1.value = input +x+y+z;
+			}
+			else {
+				error1.innerText = 'нужно ввести 4 символа';
+				mes_cod1.value = '';
+			}
+		}
+		function decode() {
+			let input = document.getElementById('mes2').value;
+			if (input.length === 7) {
+				let x = (Number(input[0]) + Number(input[1]) + Number(input[2]))%2;
+				let y = (Number(input[0]) + Number(input[1]) + Number(input[3]))%2;
+				let z = (Number(input[0]) + Number(input[2]) + Number(input[3]))%2;
+				if ((x === Number(input[4])) && (y === Number(input[5])) && (z === Number(input[6]))) {
+					mes_cod2.value = input[0] + input[1] + input[2] + input[3];
+					error3.innerText = '';
+					error4.innerText = 'раскодировано без ошибок';
+				}
+				else if (x !== Number(input[4]) && y === Number(input[5]) && z === Number(input[6])) {
+					x = (x+1)%2;
+					mes_cod2.value = input[0] + input[1] + input[2] + input[3];
+					error3.innerText = 'исправлена ошибка в служебных символах';
+					error4.innerText = '';
+				}
+				else if (x === Number(input[4]) && y !== Number(input[5]) && z === Number(input[6])) {
+					y = (x+1)%2;
+					mes_cod2.value = input[0] + input[1] + input[2] + input[3];
+					error3.innerText = 'исправлена ошибка в служебных символах';
+					error4.innerText = '';
+				}
+				else if (x === Number(input[4]) && y === Number(input[5]) && z !== Number(input[6])) {
+					z = (x+1)%2;
+					mes_cod2.value = input[0] + input[1] + input[2] + input[3];
+					error3.innerText = 'исправлена ошибка в служебных символах';
+					error4.innerText = '';
+				}
+				else if (x !== Number(input[4]) && y !== Number(input[5]) && z === Number(input[6])) {
+					mes_cod2.value = input[0] + (Number(input[1])+1)%2 + input[2] + input[3];
+					error3.innerText = 'исправлена ошибка в сообщении';
+					error4.innerText = '';
+				}
+				else if (x === Number(input[4]) && y !== Number(input[5]) && z !== Number(input[6])) {
+					mes_cod2.value = input[0] + input[1] + input[2] + (Number(input[3])+1)%2;
+					error3.innerText = 'исправлена ошибка в сообщении';
+					error4.innerText = '';
+				}
+				else if (x !== Number(input[4]) && y === Number(input[5]) && z !== Number(input[6])) {
+					mes_cod2.value = input[0] + input[1] + (Number(input[2])+1)%2 + input[3];
+					error3.innerText = 'исправлена ошибка в сообщении';
+					error4.innerText = '';
+				}
+				else {
+					mes_cod2.value = (Number(input[0])+1)%2 + input[1] + input[2] + input[3];
+					error3.innerText = 'исправлена ошибка в сообщении';
+					error4.innerText = '';
+				}
+				error2.innerText = '';
+			}
+			else {
+				error2.innerText = 'нужно ввести 7 символов';
+				mes_cod2.value = '';
+			}
+		}
+	</script>
+</body>
+</html>

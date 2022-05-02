@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+* {
+    font-family: Roboto;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+.err {
+    color: red;
+    font-size: 14px;
+    font-weight: 400;
+}
+.err_changed {
+    color: rgb(236, 222, 28);
+}
+.err_no {
+    color: green;
+}
+.field_names {
+    color: #5b0566;
+    font-size: 20px;
+}
+.header {
+    font-size: 40px;
+    font-family: 'Lobster', cursive;
+    color: #e485e7;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+.content {
+    display: flex;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+.row {
+    margin-bottom: 10px;
+}
+input[type="text"] {
+    background: #fff;
+    border: 1px solid #cbcbcb;
+    font-size: 14px;
+    outline: none;
+    padding: 2px 10px;
+    box-shadow: none;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+input[type="button"] {
+    border: 0px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #63b4ad;
+    padding: 3px;
+    font-weight: 400;
+    margin-left: 6px;
+}
+input.clear {
+    background: #6ec570;
+}
+hr {
+    background-color: #000;
+    margin-left: 0px;
+    margin-top: 40px;
+}
+.anonymous {
+    margin-left: 40px;
+}

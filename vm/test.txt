@@ -1,0 +1,8 @@
+set 100 5
+input 101
+mul 2 101 102
+
+output 100
+
+output 102
+end

@@ -1,0 +1,25 @@
+input 205
+
+set 200 1
+set 201 0
+set 202 1
+set 203 1
+set 204 0
+
+compare 205 200
+jb outOfRange
+
+.fib
+    mov 201 202
+    mov 202 203
+    add 201 202 203
+    add 204 200 204
+    compare 204 205
+    je result
+    goto fib
+.outOfRange
+    set 200 Допустимы_только_натуральные_числа
+    output 200
+    exit
+.result
+    output 201
